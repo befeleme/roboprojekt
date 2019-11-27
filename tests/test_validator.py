@@ -3,14 +3,14 @@ Unit tests for validator.py
 """
 import pytest
 
-from loading import get_board
-from validator import get_tiles, get_laser_count, get_flags_and_starts
-from validator import check_count_of_tiles_types, check_layers_order
-from validator import check_flag_is_not_on_hole_or_start
-from validator import sort_and_check_consecutive_numbers
-from validator import NumberedTilesNotInOrderError, WrongLayersOrderError
-from validator import FlagOnStartOrHoleError, RepeatingTilesError
-from validator import TilesOfOneTypeError
+from src.loading import get_board
+from src.validator import get_tiles, get_laser_count, get_flags_and_starts
+from src.validator import check_count_of_tiles_types, check_layers_order
+from src.validator import check_flag_is_not_on_hole_or_start
+from src.validator import sort_and_check_consecutive_numbers
+from src.validator import NumberedTilesNotInOrderError, WrongLayersOrderError
+from src.validator import FlagOnStartOrHoleError, RepeatingTilesError
+from src.validator import TilesOfOneTypeError
 
 
 def test_numbers_are_consecutive():

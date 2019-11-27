@@ -5,9 +5,9 @@ from collections import OrderedDict
 from random import shuffle
 import yaml
 
-from util_backend import Direction, Rotation, get_next_coordinates
-from tile import HoleTile
-from loading import get_board, get_map_data, board_from_data
+from src.util_backend import Direction, Rotation, get_next_coordinates
+from src.tile import HoleTile
+from src.loading import get_board, get_map_data, board_from_data
 
 
 MAX_CARD_COUNT = 9

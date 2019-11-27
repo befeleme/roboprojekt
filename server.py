@@ -11,7 +11,7 @@ import asyncio
 import click
 from aiohttp import web
 
-from backend import State
+from src.backend import State
 
 
 class Server:

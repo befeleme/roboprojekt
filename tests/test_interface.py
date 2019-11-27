@@ -1,5 +1,5 @@
 import pytest
-from interface import InterfaceState
+from src.interface import InterfaceState
 
 
 def test_init():

@@ -9,10 +9,10 @@ import pyglet
 import click
 from time import monotonic
 
-from interface_frontend import draw_interface, create_window, handle_text, handle_click
-from interface import InterfaceState
-from backend import State
-from util_network import tick_asyncio
+from src.interface_frontend import draw_interface, create_window, handle_text, handle_click
+from src.interface import InterfaceState
+from src.backend import State
+from src.util_network import tick_asyncio
 
 
 class Interface:

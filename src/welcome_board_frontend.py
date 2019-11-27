@@ -1,7 +1,7 @@
 import pyglet
 
-from util_frontend import get_sprite, get_label, window_zoom
-from util_frontend import loaded_robots_images, player_sprite
+from src.util_frontend import get_sprite, get_label, window_zoom
+from src.util_frontend import loaded_robots_images, player_sprite
 
 
 WINDOW_WIDTH = 1030

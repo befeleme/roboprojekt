@@ -10,9 +10,9 @@ import aiohttp
 import pyglet
 import click
 
-from backend import State
-from util_network import tick_asyncio
-from welcome_board_frontend import create_window, draw_board, handle_click
+from src.backend import State
+from src.util_network import tick_asyncio
+from src.welcome_board_frontend import create_window, draw_board, handle_click
 from client_interface import run_from_welcome_board as interface_main
 
 

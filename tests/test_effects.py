@@ -17,8 +17,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from backend import State, get_start_tiles
-from backend import MovementCard, RotationCard
+from src.backend import State, get_start_tiles
+from src.backend import MovementCard, RotationCard
 
 CARD_TYPES = {
     "move": MovementCard,

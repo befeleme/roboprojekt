@@ -3,8 +3,8 @@ Loading module contains functions to load map file exported to json format from 
 """
 import json
 
-from util_backend import Direction
-from tile import create_tile_subclass
+from src.util_backend import Direction
+from src.tile import create_tile_subclass
 
 
 def get_map_data(map_name):

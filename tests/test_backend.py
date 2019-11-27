@@ -1,11 +1,11 @@
 import pytest
 
-from backend import create_robots, Robot, State, MovementCard
-from backend import RotationCard, get_direction_from_coordinates
-from backend import get_robot_names
-from util_backend import Direction, Rotation
-from tile import Tile
-from loading import get_board
+from src.backend import create_robots, Robot, State, MovementCard
+from src.backend import RotationCard, get_direction_from_coordinates
+from src.backend import get_robot_names
+from src.util_backend import Direction, Rotation
+from src.tile import Tile
+from src.loading import get_board
 
 
 def test_robots_on_start_coordinates():

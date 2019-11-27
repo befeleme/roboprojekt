@@ -1,8 +1,8 @@
 import pyglet
 from time import monotonic
 
-from util_frontend import TILE_WIDTH, TILE_HEIGHT, get_label, get_sprite
-from util_frontend import window_zoom, loaded_robots_images, player_sprite
+from src.util_frontend import TILE_WIDTH, TILE_HEIGHT, get_label, get_sprite
+from src.util_frontend import window_zoom, loaded_robots_images, player_sprite
 
 MAX_LIVES_COUNT = 3
 MAX_FLAGS_COUNT = 8

@@ -2,7 +2,7 @@
 Tile contains class Tile and its subclasses.
 """
 
-from util_backend import Direction, Rotation, get_next_coordinates
+from src.util_backend import Direction, Rotation, get_next_coordinates
 
 
 class Tile:

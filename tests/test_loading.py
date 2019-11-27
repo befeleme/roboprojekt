@@ -7,14 +7,14 @@ Tests checking the structure of read JSON file.
 import pytest
 from pathlib import Path
 
-from loading import get_map_data, get_tiles_data, get_tile_id, get_tile_direction
-from loading import get_board, get_tiles_properties
-from util_backend import Direction, Rotation
-from tile import Tile, HoleTile
-from validator import check_tiles, WrongLayersOrderError, RepeatingTilesError
-from validator import TilesOfOneTypeError, FlagOnStartOrHoleError
-from validator import LasersInOppositeDirectionError, LasersWithoutWallError
-from validator import NumberedTilesNotInOrderError
+from src.loading import get_map_data, get_tiles_data, get_tile_id, get_tile_direction
+from src.loading import get_board, get_tiles_properties
+from src.util_backend import Direction, Rotation
+from src.tile import Tile, HoleTile
+from src.validator import check_tiles, WrongLayersOrderError, RepeatingTilesError
+from src.validator import TilesOfOneTypeError, FlagOnStartOrHoleError
+from src.validator import LasersInOppositeDirectionError, LasersWithoutWallError
+from src.validator import NumberedTilesNotInOrderError
 
 
 # List of paths to valid test maps.

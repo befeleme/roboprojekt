@@ -6,10 +6,10 @@ import aiohttp
 import pyglet
 import click
 from time import monotonic
-from util_network import tick_asyncio
 
-from backend import State
-from frontend import draw_state, create_window
+from src.util_network import tick_asyncio
+from src.backend import State
+from src.frontend import draw_state, create_window
 
 # How long one state from the log should be displayed (in seconds)
 LOG_FRAME_TIME = 0.2

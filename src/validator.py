@@ -4,8 +4,8 @@ It checks that the maps have correct structure
 Don't call it separately
 """
 
-from loading import get_board
-from util_backend import Direction, Rotation
+from src.loading import get_board
+from src.util_backend import Direction, Rotation
 
 
 class RepeatingTilesError(Exception):
