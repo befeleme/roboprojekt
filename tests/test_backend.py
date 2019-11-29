@@ -347,27 +347,25 @@ def test_check_winner_3():
     assert state.robots[1].winner
 
 
-def test_change_robots_start_coordinates():
+def test_find_last_start_coordinates():
     """
-    Assert it is possible to change start coordinates when no other robot
-    has them as their start ones.
-    """
-    state = State.get_start_state("maps/test_maps/test_3.json")
-    state.robots[0].start_coordinates = (5, 5)
-    state.robots[1].start_coordinates = (1, 0)
-    state.robots[1].coordinates = (5, 4)
-    state.robots[1].change_start_coordinates(state)
-    assert state.robots[1].start_coordinates == (5, 4)
-
-
-def test_dont_change_robots_start_coordinates():
-    """
-    Assert it is not possible to change start coordinates when another robot
-    has them as their start ones.
+    Change the coordinates to the last in the list
+    if no one is standing on them.
     """
     state = State.get_start_state("maps/test_maps/test_3.json")
-    state.robots[0].start_coordinates = (5, 5)
-    state.robots[1].start_coordinates = (1, 0)
+    state.robots[0].start_coordinates = [(1, 0), (5, 5)]
+    state.robots[1].coordinates = (1, 0)
+    state.robots[0].find_free_start(state)
+    assert state.robots[0].coordinates == (5, 5)
+
+
+def test_find_another_robots_start_coordinates():
+    """
+    Don't change coordinates to the last ones when another robot
+    stands on them, pick the previous ones.
+    """
+    state = State.get_start_state("maps/test_maps/test_3.json")
+    state.robots[0].start_coordinates = [(3, 2), (1, 0), (5, 5)]
     state.robots[1].coordinates = (5, 5)
-    state.robots[1].change_start_coordinates(state)
-    assert state.robots[1].start_coordinates == (1, 0)
+    state.robots[0].find_free_start(state)
+    assert state.robots[0].coordinates == (1, 0)

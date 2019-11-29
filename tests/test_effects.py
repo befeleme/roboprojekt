@@ -140,7 +140,12 @@ def compare_results_with_robots(commands, state):
                 if "power_down" in attribute:
                     assert robot.power_down == attribute["power_down"]
                 if "start" in attribute:
-                    assert robot.start_coordinates == tuple(attribute["start"])
+                    start_coordinates = []
+                    for coordinates in attribute["start"]:
+                        print("tu", coordinates)
+                        start_coordinates.append(tuple(coordinates))
+                    print(start_coordinates)
+                    assert robot.start_coordinates == start_coordinates
 
 
 @pytest.mark.parametrize(
