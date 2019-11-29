@@ -310,11 +310,15 @@ class Robot:
 
     def find_free_start(self, state):
         """
-        Check the start coordinates from the last in the list.
-        If no other robots stand on them, set current coordinates there.
-        If there are robots, check the next until you get the free ones.
+        Check the possible start coodinates from the last in the list.
+        If no other robots stand on them, set current coordinates there. If there stands another robot,
+        check the next until you get the free ones.
+        When the history of robot's own coordinates ends,
+        iterate through the other start tiles coordinates.
         """
-        for last_coordinates in reversed(self.start_coordinates):
+        last_robot_starts = list(reversed(self.start_coordinates))
+        last_robot_starts.extend(state.start_coordinates)
+        for last_coordinates in last_robot_starts:
             for robot in state.robots:
                 if robot.coordinates == last_coordinates:
                     break
@@ -521,10 +525,13 @@ class State:
         initialize State object with them.
         """
         board = get_board(map_name)
-        robots_start = create_robots(board, players)
+        robots_start, start_coordinates = create_robots(board, players)
         state = cls(board, robots_start)
         for robot in state.robots:
             state.deal_cards(robot)
+        # Save the list of start tiles coordinates for robots
+        # reinitialising purposes.
+        state.start_coordinates = start_coordinates
         return state
 
     def get_tile_count(self):
@@ -940,18 +947,18 @@ def get_start_tiles(board, tile_type="start"):
 
 def create_robots(board, players=None):
     """
-    Place robots on start tiles.
-
+    Place and return robots on start tiles and return start tiles coordinates.
     board: dictionary returned by get_board()
-    Initialize Robot objects on the start tiles coordinates with random
-    choice of robot's avatar on particular tile.
-    Once the robot is randomly chosen, he is removed from the list
-    (he cannot appear twice on the board).
+    Initialize Robot objects on the start tiles coordinates with a robot's
+    avatar on particular tile. Once the robot is assigned,
+    he is removed from the list (he cannot appear twice on the board).
     Robots are placed on board in the direction of their start tiles.
     The robots are ordered according to their start tiles.
+    Return also start tiles coordinates for further processing.
     """
     start_tiles = get_start_tiles(board)
     robots_on_start = []
+    tiles_coordinates = []
     robot_names = get_robot_names()
 
     for start_tile_number, name in zip(start_tiles, robot_names):
@@ -961,11 +968,11 @@ def create_robots(board, players=None):
             # Get direction and coordinates for the robot on the tile
             initial_direction = start_tiles[start_tile_number]["tile_direction"]
             initial_coordinates = start_tiles[start_tile_number]["coordinates"]
-
+            tiles_coordinates.append(initial_coordinates)
             # Create a robot, add him to robot's list
             robot = Robot(initial_direction, initial_coordinates, name)
             robots_on_start.append(robot)
-    return robots_on_start
+    return robots_on_start, tiles_coordinates
 
 
 def get_colliding_robots(robots):

@@ -1,22 +1,10 @@
 import pytest
 
-from backend import create_robots, Robot, State, MovementCard
+from backend import Robot, State, MovementCard
 from backend import RotationCard, get_direction_from_coordinates
 from backend import get_robot_names
 from util_backend import Direction, Rotation
 from tile import Tile
-from loading import get_board
-
-
-def test_robots_on_start_coordinates():
-    """
-    Assert that the result of create_robots is a list which contains
-    Robot objects with correct attribute coordinates.
-    """
-    board = get_board("maps/test_maps/test_3.json")
-    robots = create_robots(board)
-    assert isinstance(robots, list)
-    assert isinstance(robots[0], Robot)
 
 
 def test_start_state():

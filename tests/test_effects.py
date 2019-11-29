@@ -142,9 +142,7 @@ def compare_results_with_robots(commands, state):
                 if "start" in attribute:
                     start_coordinates = []
                     for coordinates in attribute["start"]:
-                        print("tu", coordinates)
                         start_coordinates.append(tuple(coordinates))
-                    print(start_coordinates)
                     assert robot.start_coordinates == start_coordinates
 
 
