@@ -71,21 +71,25 @@ class WelcomeBoard:
         Process information from server.
         """
         async with aiohttp.ClientSession() as session:
-            async with session.ws_connect('http://' + self.hostname + ':8080/receiver/') as ws:
-                # Loop "for" is finished when client disconnects from server
-                async for message in ws:
-                    message = message.json()
-                    if "game_state" in message:
-                        self.state = State.whole_from_dict(message)
-                        if self.window is None:
-                            self.window = create_window(
-                                self.window_draw,
-                                self.on_mouse_press,
-                                self.on_text,
-                                self.on_text_motion,
-                            )
-                    if "available_robots" in message:
-                        self.available_robots = self.state.robots_from_dict({"robots": message["available_robots"]})
+            try:
+                async with session.ws_connect('http://' + self.hostname + ':8080/receiver/') as ws:
+                    # Loop "for" is finished when client disconnects from server
+                    async for message in ws:
+                        message = message.json()
+                        if "game_state" in message:
+                            self.state = State.whole_from_dict(message)
+                            if self.window is None:
+                                self.window = create_window(
+                                    self.window_draw,
+                                    self.on_mouse_press,
+                                    self.on_text,
+                                    self.on_text_motion,
+                                )
+                        if "available_robots" in message:
+                            self.available_robots = self.state.robots_from_dict({"robots": message["available_robots"]})
+            except Exception:
+                print("Connection failed. Check the hostname. Application closed.")
+                self.window.close()
 
 
 @click.command()

@@ -61,7 +61,9 @@ class Interface:
         """
         When windows is closed, WebSocket is disconnected.
         """
-        asyncio.ensure_future(self.ws.close())
+        if self.ws is not None:
+            asyncio.ensure_future(self.ws.close())
+            self.ws = None
 
     def send_state_to_server(self):
         """
@@ -79,38 +81,41 @@ class Interface:
         """
         # create Session
         async with aiohttp.ClientSession() as session:
-            # create Websocket
-            async with session.ws_connect('http://' + self.hostname + ':8080/interface/' + robot_name) as self.ws:
-                # Cycle "for" is finished when client disconnects from server
-                async for message in self.ws:
-                    if message.type == aiohttp.WSMsgType.TEXT:
-                        message = message.json()
-                        if "robot_name" in message:
-                            robot_name = message["robot_name"]
-                            asyncio.ensure_future(self.ws.send_json({"own_robot_name": own_robot_name}))
-                        if "game_state" in message:
-                            self.set_game_state(message, robot_name, own_robot_name)
-                        if "robots" in message:
-                            self.set_robots(message, robot_name, own_robot_name)
-                        if "cards" in message:
-                            self.interface_state.dealt_cards = self.game_state.cards_from_dict(message["cards"])
-                        if "winner" in message:
-                            self.game_state.winners = message["winner"]
-                            if self.winner_time == 0:
-                                self.winner_time = monotonic()
-                        if "timer_start" in message:
-                            self.interface_state.timer = monotonic()
-                        if "blocked_cards" in message:
-                            self.set_blocked_cards(message["blocked_cards"])
-                        if "current_game_round" in message:
-                            self.game_state.game_round = message["current_game_round"]
-                        if "round_over" in message:
-                            self.interface_state = InterfaceState(change_callback=self.send_state_to_server)
-                    elif message.type == aiohttp.WSMsgType.ERROR:
-                        print("Connection closed")
-                        break
+            try:
+                # create Websocket
+                async with session.ws_connect('http://' + self.hostname + ':8080/interface/' + robot_name) as self.ws:
+                    # Cycle "for" is finished when client disconnects from server
+                    async for message in self.ws:
+                        if message.type == aiohttp.WSMsgType.TEXT:
+                            message = message.json()
+                            if "robot_name" in message:
+                                robot_name = message["robot_name"]
+                                asyncio.ensure_future(self.ws.send_json({"own_robot_name": own_robot_name}))
+                            if "game_state" in message:
+                                self.set_game_state(message, robot_name, own_robot_name)
+                            if "robots" in message:
+                                self.set_robots(message, robot_name, own_robot_name)
+                            if "cards" in message:
+                                self.interface_state.dealt_cards = self.game_state.cards_from_dict(message["cards"])
+                            if "winner" in message:
+                                self.game_state.winners = message["winner"]
+                                if self.winner_time == 0:
+                                    self.winner_time = monotonic()
+                            if "timer_start" in message:
+                                self.interface_state.timer = monotonic()
+                            if "blocked_cards" in message:
+                                self.set_blocked_cards(message["blocked_cards"])
+                            if "current_game_round" in message:
+                                self.game_state.game_round = message["current_game_round"]
+                            if "round_over" in message:
+                                self.interface_state = InterfaceState(change_callback=self.send_state_to_server)
+                        elif message.type == aiohttp.WSMsgType.ERROR:
+                            print("Connection closed")
+                            break
+            except Exception:
+                print("Connection failed. Check the hostname. Application closed.")
+                self.window.close()
         self.on_close()
-        self.ws = None
 
     def set_game_state(self, message, robot_name, own_robot_name):
         """

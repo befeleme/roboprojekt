@@ -78,23 +78,26 @@ class Receiver:
         """
         task = asyncio.create_task(self.tick_log())
         async with aiohttp.ClientSession() as session:
-            async with session.ws_connect('http://' + self.hostname + ':8080/receiver/') as ws:
-                # for loop is finished when client disconnects from server
-                async for message in ws:
-                    message = message.json()
-                    if "game_state" in message:
-                        self.state = State.whole_from_dict(message)
-                        self.reset_last_robots()
-                        if self.window is None:
-                            self.window = create_window(self.state, self.window_draw)
-                    if "available_robots" in message:
-                        self.available_robots = self.state.robots_from_dict({"robots": message["available_robots"]})
-                    if 'log' in message:
-                        self.log_to_play.extend(message['log'])
-                    if "winner" in message:
-                        self.state.winners = message["winner"]
-                        self.log_to_play.append(None)
-
+            try:
+                async with session.ws_connect('http://' + self.hostname + ':8080/receiver/') as ws:
+                    # for loop is finished when client disconnects from server
+                    async for message in ws:
+                        message = message.json()
+                        if "game_state" in message:
+                            self.state = State.whole_from_dict(message)
+                            self.reset_last_robots()
+                            if self.window is None:
+                                self.window = create_window(self.state, self.window_draw)
+                        if "available_robots" in message:
+                            self.available_robots = self.state.robots_from_dict({"robots": message["available_robots"]})
+                        if 'log' in message:
+                            self.log_to_play.extend(message['log'])
+                        if "winner" in message:
+                            self.state.winners = message["winner"]
+                            self.log_to_play.append(None)
+            except Exception:
+                print("Connection failed. Check the hostname. Application closed.")
+                pyglet.app.exit()
         task.cancel()
 
 
