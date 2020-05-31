@@ -87,21 +87,25 @@ class WelcomeBoard:
                                 )
                         if "available_robots" in message:
                             self.available_robots = self.state.robots_from_dict({"robots": message["available_robots"]})
-            except Exception:
+            except aiohttp.client_exceptions.ClientConnectorError:
                 print("Connection failed. Check the hostname. Application closed.")
                 self.window.close()
 
 
-@click.command()
-@click.option("-h", "--hostname", default="localhost",
-              help="Server's hostname.")
-def main(hostname):
+def create_client(hostname):
     welcome_board = WelcomeBoard(hostname)
     pyglet.clock.schedule_interval(tick_asyncio, 1/30)
     # Schedule the "client" task
     # More about Futures - official documentation
     # https://docs.python.org/3/library/asyncio-future.html
     asyncio.ensure_future(welcome_board.process_message())
+
+
+@click.command()
+@click.option("-h", "--hostname", default="localhost",
+              help="Server's hostname.")
+def main(hostname):
+    create_client(hostname)
     pyglet.app.run()
 
 

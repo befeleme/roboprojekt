@@ -95,22 +95,26 @@ class Receiver:
                         if "winner" in message:
                             self.state.winners = message["winner"]
                             self.log_to_play.append(None)
-            except Exception:
+            except aiohttp.client_exceptions.ClientConnectorError:
                 print("Connection failed. Check the hostname. Application closed.")
                 pyglet.app.exit()
         task.cancel()
 
 
-@click.command()
-@click.option("-h", "--hostname", default="localhost",
-              help="Server's hostname.")
-def main(hostname):
+def create_client(hostname):
     receiver = Receiver(hostname)
     pyglet.clock.schedule_interval(tick_asyncio, 1/30)
     # Schedule the "client" task
     # More about Futures - official documentation
     # https://docs.python.org/3/library/asyncio-future.html
     asyncio.ensure_future(receiver.get_game_state())
+
+
+@click.command()
+@click.option("-h", "--hostname", default="localhost",
+              help="Server's hostname.")
+def main(hostname):
+    create_client(hostname)
     pyglet.app.run()
 
 

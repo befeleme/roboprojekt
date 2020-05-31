@@ -10,8 +10,9 @@ import pyglet
 import client_receiver
 import client_welcome_board
 
-client_receiver.main()
-client_welcome_board.main()
-client_welcome_board.main()
+hostname = input("Type server's hostname: ")
+
+client_welcome_board.create_client(hostname)
+client_receiver.create_client(hostname)
 
 pyglet.app.run()

@@ -112,7 +112,7 @@ class Interface:
                         elif message.type == aiohttp.WSMsgType.ERROR:
                             print("Connection closed")
                             break
-            except Exception:
+            except aiohttp.client_exceptions.ClientConnectorError:
                 print("Connection failed. Check the hostname. Application closed.")
                 self.window.close()
         self.on_close()
